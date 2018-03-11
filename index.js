@@ -1,5 +1,5 @@
 const request = require('request');
-const rx = require('rx');
+const rx = require('rxjs');
 const moment = require('moment');
 
 const eventStartMoment = event => moment(event.event_start, "YYYY-MM-DD'T'HH:mm:ss'Z'")
@@ -18,11 +18,11 @@ const scheduleObservable = rx.Observable.create(observer => {
         };
         request(options, (error, response, body) => {
             if (error) {
-                observer.onError(error);
+                observer.error(error);
             } else {
-                observer.onNext(JSON.parse(body));
+                observer.next(JSON.parse(body));
             }
-            observer.onCompleted();
+            observer.complete();
         });
     })
     .map(events => events.sort((eventA, eventB) => eventStartMoment(eventA).valueOf() - eventStartMoment(eventB).valueOf()))
@@ -32,6 +32,6 @@ const scheduleObservable = rx.Observable.create(observer => {
 
 scheduleObservable.subscribe(
     eventAsText => console.log(eventAsText),
-    error => console.error(':( Failed to load schedule:', error),
-    () => console.log('Happy breizhcamp!')
+    error => console.error('😡😲😡 Failed to load schedule:', error),
+    () => console.log('😊 Happy breizhcamp!')
 );
