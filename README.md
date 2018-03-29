@@ -32,5 +32,5 @@ yarn start > breizhcamp_schedule.md
 # Outputs
 Don't bother running the tool and view the schedule:
 
-* [output done on 11st March 2018](https://github.com/lucsorel/breizhcamp-2017-schedule/blob/master/20180311-breizhcamp-2018-schedule.md).
-* [output done on 21st March 2017](https://github.com/lucsorel/breizhcamp-2017-schedule/blob/master/20170321-breizhcamp-2017-schedule.md).
+* [BreizhCamp 2018](20180311-breizhcamp-2018-schedule.md) (output done on 11st March 2018)
+* [BreizhCamp 2017](20170321-breizhcamp-2017-schedule.md) (output done on 21st March 2017)
