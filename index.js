@@ -1,5 +1,6 @@
 const request = require('request')
-const rx = require('rxjs')
+const { Observable } = require('rxjs')
+const { map, flatMap, filter } = require('rxjs/operators')
 const moment = require('moment')
 
 moment.locale('fr')
@@ -13,7 +14,7 @@ ${eventStartMoment(event).format('dddd DD/MM HH:mm')} - ${eventEndMoment(event).
 ${event.description}
 `
 
-const scheduleObservable = rx.Observable.create(observer => {
+const scheduleObservable = Observable.create(observer => {
         const options = {
             url: 'https://api.cfp.io/api/schedule',
             headers: { 'X-Tenant-Id': 'breizhcamp' }
@@ -27,10 +28,12 @@ const scheduleObservable = rx.Observable.create(observer => {
             observer.complete()
         })
     })
-    .map(events => events.sort((eventA, eventB) => eventStartMoment(eventA).valueOf() - eventStartMoment(eventB).valueOf()))
-    .flatMap(events => events)
-    .filter(event => event.active === 'Y')
-    .map(bzhcampEventToMd)
+    .pipe(
+        map(events => events.sort((eventA, eventB) => eventStartMoment(eventA).valueOf() - eventStartMoment(eventB).valueOf())),
+        flatMap(events => events),
+        filter(event => event.active === 'Y'),
+        map(bzhcampEventToMd)
+    )
 
 scheduleObservable.subscribe(
     eventAsText => console.log(eventAsText),
